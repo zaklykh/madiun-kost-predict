@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <title>Dashboard Kos Madiun</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #17243b;
+            --muted: #748198;
+            --line: #e8edf5;
+            --surface: #fff;
+            --blue: #4263eb;
+            --blue-soft: #edf1ff;
+            --mint: #14a887;
+            --canvas: #f5f7fb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            color: var(--ink);
+            background:
+                radial-gradient(ellipse at 9% 0%, rgba(66, 99, 235, .09), transparent 34rem),
+                var(--canvas);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .dashboard-shell {
+            width: min(100% - 48px, 1560px);
+            margin: 0 auto;
+            padding: 34px 0 48px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 27px;
+        }
+
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 48px;
+            height: 48px;
+            place-items: center;
+            color: #fff;
+            background: linear-gradient(145deg, #5575f5, #3453d5);
+            border-radius: 15px;
+            box-shadow: 0 9px 22px rgba(66, 99, 235, .24);
+        }
+
+        .brand-mark svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .eyebrow,
+        .section-kicker {
+            color: var(--muted);
+            font-size: .72rem;
+            font-weight: 750;
+            letter-spacing: .11em;
+            text-transform: uppercase;
+        }
+
+        .page-title {
+            margin: 2px 0 0;
+            font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+            font-weight: 760;
+            letter-spacing: -.045em;
+        }
+
+        .header-note {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 10px 14px;
+            color: #42516a;
+            background: rgba(255, 255, 255, .76);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            font-size: .83rem;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--mint);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(20, 168, 135, .12);
+        }
+
+        .intro {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .intro h2 {
+            margin: 0 0 6px;
+            font-size: 1.08rem;
+            font-weight: 720;
+            letter-spacing: -.02em;
+        }
+
+        .intro p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        .content-grid {
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid rgba(226, 232, 242, .9);
+            border-radius: 18px;
+            box-shadow: 0 8px 26px rgba(29, 48, 82, .045);
+        }
+
+        .filter-panel {
+            position: sticky;
+            top: 20px;
+            padding: 22px;
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 19px;
+        }
+
+        .panel-heading h3,
+        .chart-heading h3,
+        .table-heading h3 {
+            margin: 3px 0 0;
+            font-size: 1rem;
+            font-weight: 730;
+            letter-spacing: -.025em;
+        }
+
+        .heading-icon {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            flex: 0 0 auto;
+            place-items: center;
+            color: var(--blue);
+            background: var(--blue-soft);
+            border-radius: 12px;
+        }
+
+        .heading-icon svg {
+            width: 19px;
+            height: 19px;
+        }
+
+        .filter-section + .filter-section {
+            margin-top: 21px;
+            padding-top: 19px;
+            border-top: 1px solid var(--line);
+        }
+
+        .filter-section-title {
+            margin: 0 0 13px;
+            color: #394862;
+            font-size: .79rem;
+            font-weight: 750;
+        }
+
+        .form-label {
+            margin-bottom: 6px;
+            color: #53617a;
+            font-size: .77rem;
+            font-weight: 620;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 42px;
+            color: var(--ink);
+            background-color: #fbfcfe;
+            border-color: #e3e9f2;
+            border-radius: 10px;
+            font-size: .85rem;
+        }
+
+        .form-control::placeholder {
+            color: #a0aabc;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background-color: #fff;
+            border-color: #9babff;
+            box-shadow: 0 0 0 .2rem rgba(66, 99, 235, .11);
+        }
+
+        .range-value {
+            color: var(--ink);
+            font-size: .79rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--blue);
+        }
+
+        .range-pair {
+            display: grid;
+            gap: 5px;
+        }
+
+        .choice-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            overflow: hidden;
+            border: 1px solid #e3e9f2;
+            border-radius: 10px;
+        }
+
+        .choice-row label {
+            position: relative;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .choice-row label + label {
+            border-left: 1px solid #e3e9f2;
+        }
+
+        .choice-row input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .choice-row span {
+            display: block;
+            padding: 10px 5px;
+            color: #53617a;
+            font-size: .76rem;
+            text-align: center;
+        }
+
+        .choice-row input:checked + span {
+            color: var(--blue);
+            background: var(--blue-soft);
+            font-weight: 700;
+        }
+
+        .choice-row input:focus-visible + span {
+            outline: 2px solid var(--blue);
+            outline-offset: -2px;
+        }
+
+        .category-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-options .form-check {
+            margin: 0;
+            padding: 7px 10px 7px 31px;
+            background: #f7f8fb;
+            border-radius: 9px;
+        }
+
+        .category-options .form-check-input {
+            margin-left: -19px;
+        }
+
+        .simulation-details {
+            color: #53617a;
+            font-size: .79rem;
+        }
+
+        .simulation-details summary {
+            cursor: pointer;
+            font-weight: 650;
+        }
+
+        .input-group .form-control:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .input-group .form-control:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .filter-actions {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 9px;
+            margin-top: 22px;
+        }
+
+        .btn {
+            min-height: 42px;
+            border-radius: 10px;
+            font-size: .85rem;
+            font-weight: 650;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            border-color: var(--blue);
+            box-shadow: 0 5px 12px rgba(66, 99, 235, .17);
+        }
+
+        .btn-primary:hover {
+            background: #3554dc;
+            border-color: #3554dc;
+        }
+
+        .btn-outline-secondary {
+            color: #56647a;
+            border-color: #e0e6ef;
+        }
+
+        .btn-outline-secondary:hover {
+            color: var(--ink);
+            background: #f5f7fb;
+            border-color: #d3dbe8;
+        }
+
+        .results-column {
+            min-width: 0;
+        }
+
+        .alert {
+            border: 0;
+            border-radius: 12px;
+            font-size: .88rem;
+        }
+
+        .summary-grid {
+            margin-bottom: 17px;
+        }
+
+        .summary-card {
+            position: relative;
+            min-height: 112px;
+            height: 100%;
+            overflow: hidden;
+            padding: 18px 19px;
+        }
+
+        .summary-card::after {
+            position: absolute;
+            right: -17px;
+            bottom: -34px;
+            width: 82px;
+            height: 82px;
+            content: "";
+            background: var(--card-tint, #edf1ff);
+            border-radius: 50%;
+            opacity: .8;
+        }
+
+        .summary-card.blue {
+            --card-tint: #e8edff;
+            --card-accent: #4263eb;
+        }
+
+        .summary-card.green {
+            --card-tint: #e2f7f1;
+            --card-accent: #14a887;
+        }
+
+        .summary-card.orange {
+            --card-tint: #fff2df;
+            --card-accent: #e79932;
+        }
+
+        .summary-card.purple {
+            --card-tint: #f1eaff;
+            --card-accent: #8b5bd6;
+        }
+
+        .summary-label {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: .77rem;
+            font-weight: 630;
+        }
+
+        .summary-label::before {
+            width: 7px;
+            height: 7px;
+            content: "";
+            background: var(--card-accent);
+            border-radius: 50%;
+        }
+
+        .summary-value {
+            position: relative;
+            z-index: 1;
+            display: block;
+            margin-top: 11px;
+            color: var(--ink);
+            font-size: clamp(1.08rem, 1.8vw, 1.4rem);
+            font-weight: 760;
+            letter-spacing: -.04em;
+            overflow-wrap: anywhere;
+        }
+
+        .charts-grid {
+            margin-bottom: 17px;
+        }
+
+        .chart-panel {
+            height: 100%;
+            padding: 18px;
+        }
+
+        .chart-heading {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 16px;
+        }
+
+        .chart-heading .heading-icon {
+            width: 36px;
+            height: 36px;
+        }
+
+        .chart-heading p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: .77rem;
+        }
+
+        .chart-image-wrap {
+            display: grid;
+            min-height: 240px;
+            place-items: center;
+            padding: 8px;
+            background: #fafbfe;
+            border: 1px solid #eef1f6;
+            border-radius: 13px;
+        }
+
+        img.grafik {
+            display: block;
+            width: 100%;
+            max-height: 330px;
+            object-fit: contain;
+        }
+
+        .chart-stat {
+            min-height: 20px;
+            margin: 11px 0 0;
+            color: var(--muted);
+            font-size: .76rem;
+            line-height: 1.55;
+        }
+
+        .ai-explanation {
+            margin-top: 10px;
+            padding: 11px 12px;
+            color: #46577c;
+            background: #f0f3ff;
+            border: 1px solid #e6eaff;
+            border-radius: 10px;
+            font-size: .78rem;
+            line-height: 1.55;
+        }
+
+        .ai-label {
+            display: block;
+            margin-bottom: 3px;
+            color: #6677b0;
+            font-size: .67rem;
+            font-weight: 760;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .class-badge {
+            display: inline-flex;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-size: .7rem;
+            font-weight: 750;
+        }
+
+        .class-badge.murah {
+            color: #137b65;
+            background: #e2f7f1;
+        }
+
+        .class-badge.mahal {
+            color: #a45e13;
+            background: #fff2df;
+        }
+
+        .table-panel {
+            overflow: hidden;
+        }
+
+        .table-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 20px 21px 16px;
+        }
+
+        .table-heading p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: .77rem;
+        }
+
+        .table-badge {
+            padding: 6px 10px;
+            color: #596986;
+            background: #f3f5f9;
+            border-radius: 999px;
+            font-size: .72rem;
+            font-weight: 650;
+            white-space: nowrap;
+        }
+
+        .tabel-scroll {
+            max-height: 350px;
+            overflow: auto;
+            border-top: 1px solid var(--line);
+        }
+
+        .table {
+            min-width: 700px;
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            padding: 12px 18px;
+            color: #77849a;
+            background: #fafbfe;
+            border-bottom: 1px solid var(--line);
+            font-size: .7rem;
+            font-weight: 730;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 12px 18px;
+            color: #43516a;
+            border-color: #eff2f7;
+            font-size: .81rem;
+        }
+
+        .table tbody td:first-child {
+            color: var(--ink);
+            font-weight: 650;
+        }
+
+        .table tbody tr:hover td {
+            background: #fafbff;
+        }
+
+        @media (max-width: 991.98px) {
+            .dashboard-shell {
+                width: min(100% - 32px, 760px);
+                padding-top: 24px;
+            }
+
+            .filter-panel {
+                position: static;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .dashboard-shell {
+                width: min(100% - 24px, 480px);
+                padding-top: 18px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                margin-bottom: 22px;
+            }
+
+            .brand-mark {
+                width: 42px;
+                height: 42px;
+                border-radius: 13px;
+            }
+
+            .header-note {
+                gap: 7px;
+                padding: 8px 10px;
+                font-size: .72rem;
+            }
+
+            .intro {
+                align-items: flex-start;
+            }
+
+            .filter-panel,
+            .chart-panel {
+                padding: 18px;
+            }
+
+            .summary-card {
+                min-height: 100px;
+                padding: 15px;
+            }
+
+            .chart-image-wrap {
+                min-height: 180px;
+            }
+
+            .table-heading {
+                padding: 17px;
+            }
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .panel {
+                transition: box-shadow .2s ease, transform .2s ease;
+            }
+
+            .panel:hover {
+                box-shadow: 0 12px 32px rgba(29, 48, 82, .07);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="dashboard-shell">
+        <header class="page-header">
+            <div class="brand-lockup">
+                <div class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />
+                        <path d="M8 10h.01M16 10h.01" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="eyebrow">Analitik hunian</div>
+                    <h1 class="page-title">Kos Kota Madiun</h1>
+                </div>
+            </div>
+            <div class="header-note"><span class="status-dot" aria-hidden="true"></span>Dashboard aktif</div>
+        </header>
+
+        <section class="intro" aria-label="Ringkasan dashboard">
+            <div>
+                <h2>Ringkasan data kos</h2>
+                <p>Jelajahi pilihan kos dan lihat analisis harga berdasarkan preferensi Anda.</p>
+            </div>
+            <span class="table-badge">{{ total }} data tersedia</span>
+        </section>
+
+        <div class="row g-4 content-grid">
+            <aside class="col-lg-3">
+                <form id="filter-form" class="panel filter-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <div class="section-kicker">Sesuaikan hasil</div>
+                            <h3>Filter &amp; prediksi</h3>
+                        </div>
+                        <div class="heading-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 6h16M7 12h10m-7 6h4" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <section class="filter-section" aria-labelledby="filter-kos-title">
+                        <h4 class="filter-section-title" id="filter-kos-title">Filter kos</h4>
+
+                        <div class="form-label d-flex justify-content-between">
+                            <label for="harga-min">Rentang harga</label>
+                            <output class="range-value" id="harga-label"></output>
+                        </div>
+                        <div class="range-pair">
+                            <input id="harga-min" type="range" name="harga_min" min="{{ harga_min }}"
+                                max="{{ harga_max }}" step="50000" value="{{ harga_min }}" aria-label="Harga minimum">
+                            <input id="harga-max" type="range" name="harga_max" min="{{ harga_min }}"
+                                max="{{ harga_max }}" step="50000" value="{{ harga_max }}" aria-label="Harga maksimum">
+                        </div>
+
+                        <div class="form-label d-flex justify-content-between mt-3">
+                            <label for="jarak-max">Jarak maksimal</label>
+                            <output class="range-value" id="jarak-label"></output>
+                        </div>
+                        <input id="jarak-max" type="range" name="jarak_max" min="{{ jarak_min }}"
+                            max="{{ jarak_maks }}" step="0.1" value="{{ jarak_maks }}">
+
+                        <div class="form-label d-flex justify-content-between mt-3">
+                            <label for="rating-min">Rating minimal</label>
+                            <output class="range-value" id="rating-label"></output>
+                        </div>
+                        <input id="rating-min" type="range" name="rating_min" min="{{ rating_min }}"
+                            max="{{ rating_maks }}" step="0.1" value="{{ rating_min }}">
+
+                        <span class="form-label d-block mt-3">Fasilitas AC</span>
+                        <div class="choice-row" role="radiogroup" aria-label="Filter fasilitas AC">
+                            <label><input type="radio" name="ac" value="" checked><span>Semua</span></label>
+                            <label><input type="radio" name="ac" value="ya"><span>Ya</span></label>
+                            <label><input type="radio" name="ac" value="tidak"><span>Tidak</span></label>
+                        </div>
+
+                        <span class="form-label d-block mt-3">Kategori hasil klasifikasi</span>
+                        <div class="category-options">
+                            <label class="form-check">
+                                <input class="form-check-input" type="checkbox" name="kategori" value="MURAH" checked>
+                                <span class="form-check-label">Murah</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="checkbox" name="kategori" value="MAHAL" checked>
+                                <span class="form-check-label">Mahal</span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="filter-section" aria-labelledby="prediksi-title">
+                        <details class="simulation-details">
+                            <summary id="prediksi-title">Atur simulasi kos baru</summary>
+                            <label class="form-label mt-3" for="jarak-baru">Jarak (km)</label>
+                            <input id="jarak-baru" type="number" name="jarak_baru" class="form-control" value="1"
+                                step="0.1" min="{{ jarak_min }}" max="{{ jarak_maks }}">
+
+                            <label class="form-label mt-3" for="rating-baru">Rating</label>
+                            <input id="rating-baru" type="number" name="rating_baru" class="form-control" value="4"
+                                step="0.1" min="{{ rating_min }}" max="{{ rating_maks }}">
+
+                            <label class="form-label mt-3" for="ac-baru">Fasilitas AC</label>
+                            <select id="ac-baru" name="ac_baru" class="form-select">
+                                <option value="ya">Ada AC</option>
+                                <option value="tidak">Tanpa AC</option>
+                            </select>
+                        </details>
+                    </section>
+
+                    <div class="filter-actions">
+                        <button type="submit" class="btn btn-primary">Terapkan filter</button>
+                        <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    </div>
+                </form>
+            </aside>
+
+            <section class="col-lg-9 results-column" aria-label="Hasil analisis">
+                <div id="pesan" class="alert alert-warning d-none" role="alert" aria-live="polite"></div>
+
+                <div class="row g-3 summary-grid">
+                    <div class="col-6 col-xl-3">
+                        <article class="panel summary-card blue">
+                            <span class="summary-label">Jumlah kos</span>
+                            <strong class="summary-value" id="r-jumlah">-</strong>
+                        </article>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <article class="panel summary-card green">
+                            <span class="summary-label">Harga rata-rata</span>
+                            <strong class="summary-value" id="r-rata">-</strong>
+                        </article>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <article class="panel summary-card orange">
+                            <span class="summary-label">Harga termurah</span>
+                            <strong class="summary-value" id="r-murah">-</strong>
+                        </article>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <article class="panel summary-card purple">
+                            <span class="summary-label">Harga termahal</span>
+                            <strong class="summary-value" id="r-mahal">-</strong>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="row g-3 charts-grid">
+                    <div class="col-xl-6">
+                        <article class="panel chart-panel">
+                            <div class="chart-heading"><div><div class="section-kicker">Sebaran harga</div>
+                                <h3>Histogram harga</h3><p>Garis putus-putus menandai batas kategori murah/mahal.</p></div></div>
+                            <div class="chart-image-wrap"><img id="img-harga" class="grafik d-none" alt="Histogram sebaran harga kos dengan batas kategori"></div>
+                            <p class="chart-stat" id="stat-harga"></p>
+                            <div class="ai-explanation" id="ai-harga" role="status" aria-live="polite"><span class="ai-label">Penjelasan AI</span><span class="ai-text">Menunggu penjelasan…</span></div>
+                        </article>
+                    </div>
+                    <div class="col-xl-6">
+                        <article class="panel chart-panel">
+                            <div class="chart-heading"><div><div class="section-kicker">Jarak vs harga</div>
+                                <h3>Jarak dan fasilitas AC</h3><p>Warna titik membedakan kos dengan dan tanpa AC.</p></div></div>
+                            <div class="chart-image-wrap"><img id="img-jarak" class="grafik d-none" alt="Scatter plot jarak dan harga dengan warna berdasarkan fasilitas AC"></div>
+                            <p class="chart-stat" id="stat-jarak"></p>
+                            <div class="ai-explanation" id="ai-jarak" role="status" aria-live="polite"><span class="ai-label">Penjelasan AI</span><span class="ai-text">Menunggu penjelasan…</span></div>
+                        </article>
+                    </div>
+                    <div class="col-xl-6">
+                        <article class="panel chart-panel">
+                            <div class="chart-heading"><div><div class="section-kicker">Rating vs harga</div>
+                                <h3>Hubungan rating dan harga</h3><p>Setiap titik mewakili satu kos yang lolos filter.</p></div></div>
+                            <div class="chart-image-wrap"><img id="img-rating" class="grafik d-none" alt="Scatter plot rating dan harga kos"></div>
+                            <p class="chart-stat" id="stat-rating"></p>
+                            <div class="ai-explanation" id="ai-rating" role="status" aria-live="polite"><span class="ai-label">Penjelasan AI</span><span class="ai-text">Menunggu penjelasan…</span></div>
+                        </article>
+                    </div>
+                    <div class="col-xl-6">
+                        <article class="panel chart-panel">
+                            <div class="chart-heading"><div><div class="section-kicker">Pengaruh fasilitas</div>
+                                <h3>Harga dengan dan tanpa AC</h3><p>Box plot membandingkan rentang harga kedua kelompok.</p></div></div>
+                            <div class="chart-image-wrap"><img id="img-ac" class="grafik d-none" alt="Box plot harga kos dengan dan tanpa AC"></div>
+                            <p class="chart-stat" id="stat-ac"></p>
+                            <div class="ai-explanation" id="ai-ac" role="status" aria-live="polite"><span class="ai-label">Penjelasan AI</span><span class="ai-text">Menunggu penjelasan…</span></div>
+                        </article>
+                    </div>
+                    <div class="col-xl-6">
+                        <article class="panel chart-panel">
+                            <div class="chart-heading"><div><div class="section-kicker">Faktor paling berpengaruh</div>
+                                <h3>Feature importance</h3><p>Kontribusi setiap fitur pada klasifikasi pohon keputusan.</p></div></div>
+                            <div class="chart-image-wrap"><img id="img-importance" class="grafik d-none" alt="Grafik batang horizontal feature importance"></div>
+                            <p class="chart-stat" id="stat-importance">Model klasifikasi dilatih menggunakan seluruh data kos.</p>
+                            <div class="ai-explanation" id="ai-importance" role="status" aria-live="polite"><span class="ai-label">Penjelasan AI</span><span class="ai-text">Menunggu penjelasan…</span></div>
+                        </article>
+                    </div>
+                    <div class="col-xl-6">
+                        <article class="panel chart-panel">
+                            <div class="chart-heading"><div><div class="section-kicker">Kualitas klasifikasi</div>
+                                <h3>Confusion matrix 2×2</h3><p>Prediksi validasi silang dibandingkan dengan kategori aktual.</p></div></div>
+                            <div class="chart-image-wrap"><img id="img-confusion" class="grafik d-none" alt="Confusion matrix klasifikasi murah dan mahal"></div>
+                            <p class="chart-stat" id="stat-confusion"></p>
+                            <div class="ai-explanation" id="ai-confusion" role="status" aria-live="polite"><span class="ai-label">Penjelasan AI</span><span class="ai-text">Menunggu penjelasan…</span></div>
+                        </article>
+                    </div>
+                    <div class="col-12">
+                        <article class="panel chart-panel">
+                            <div class="chart-heading"><div><div class="section-kicker">Posisi kos hasil prediksi</div>
+                                <h3>Perbandingan dengan kos lain</h3><p>Titik bintang menunjukkan estimasi harga dan kategori kos baru.</p></div></div>
+                            <div class="chart-image-wrap"><img id="img-posisi" class="grafik d-none" alt="Scatter plot posisi prediksi harga kos baru"></div>
+                            <p class="chart-stat" id="stat-posisi"></p>
+                            <div class="ai-explanation" id="ai-posisi" role="status" aria-live="polite"><span class="ai-label">Penjelasan AI</span><span class="ai-text">Menunggu penjelasan…</span></div>
+                        </article>
+                    </div>
+                </div>
+
+                <section class="panel table-panel" aria-labelledby="daftar-kos-title">
+                    <div class="table-heading">
+                        <div>
+                            <div class="section-kicker">Pilihan tersedia</div>
+                            <h3 id="daftar-kos-title">Daftar kos</h3>
+                            <p>Diurutkan dari harga paling terjangkau</p>
+                        </div>
+                        <span class="table-badge">Harga per bulan</span>
+                    </div>
+                    <div class="tabel-scroll">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nama kos</th>
+                                    <th scope="col">Harga/bulan</th>
+                                    <th scope="col">Jarak</th>
+                                    <th scope="col">AC</th>
+                                    <th scope="col">Rating</th>
+                                    <th scope="col">Kategori</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabel-kos"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const URL_ANALISIS = "{% url 'api_analisis' %}";
+        const URL_JELASKAN = "{% url 'api_jelaskan' %}";
+        const form = document.getElementById("filter-form");
+        const $ = (id) => document.getElementById(id);
+        let versi = 0, timer = null;
+        const grafik = ["harga", "jarak", "rating", "ac", "importance", "confusion", "posisi"];
+
+        function formatRp(nilai) {
+            return "Rp " + Number(nilai).toLocaleString("id-ID");
+        }
+
+        function perbaruiLabelRentang() {
+            const minimum = Number($("harga-min").value);
+            const maksimum = Number($("harga-max").value);
+            $("harga-label").textContent = `${formatRp(minimum)} – ${formatRp(maksimum)}`;
+            $("jarak-label").textContent = `${Number($("jarak-max").value).toFixed(1)} km`;
+            $("rating-label").textContent = Number($("rating-min").value).toFixed(1);
+        }
+
+        function queryString() {
+            return new URLSearchParams(new FormData(form)).toString();
+        }
+
+        async function ambilJson(url) {
+            const response = await fetch(url);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.pesan || `Permintaan gagal (${response.status})`);
+            return data;
+        }
+
+        function setPenjelasan(nama, teks) {
+            $("ai-" + nama).querySelector(".ai-text").textContent = teks;
+        }
+
+        async function muatPenjelasan(saya, qs) {
+            try {
+                const data = await ambilJson(URL_JELASKAN + "?" + qs);
+                if (saya !== versi) return;
+                grafik.forEach((nama) => {
+                    setPenjelasan(nama, data.penjelasan[nama] || "Penjelasan belum tersedia.");
+                });
+            } catch (e) {
+                if (saya !== versi) return;
+                grafik.forEach((nama) => {
+                    setPenjelasan(nama, e.message || "Penjelasan Groq gagal dimuat.");
+                });
+            }
+        }
+
+        function resetHasil(teks) {
+            ["r-jumlah", "r-rata", "r-murah", "r-mahal"].forEach((id) => {
+                $(id).textContent = "-";
+            });
+            $("tabel-kos").replaceChildren();
+            grafik.forEach((nama) => {
+                $("img-" + nama).removeAttribute("src");
+                $("img-" + nama).classList.add("d-none");
+                setPenjelasan(nama, teks || "Penjelasan menunggu data yang cukup.");
+            });
+            ["harga", "jarak", "rating", "ac", "importance", "confusion", "posisi"].forEach((nama) => {
+                $("stat-" + nama).textContent = teks;
+            });
+        }
+
+        async function muat() {
+            const saya = ++versi;
+            const qs = queryString();
+
+            let data;
+            try {
+                data = await ambilJson(URL_ANALISIS + "?" + qs);
+            } catch (e) {
+                if (saya !== versi) return;
+                resetHasil("Analisis gagal dimuat. Coba lagi setelah memeriksa koneksi.");
+                $("pesan").textContent = "Gagal menghubungi server. Periksa koneksi lalu coba lagi.";
+                $("pesan").classList.remove("d-none");
+                return;
+            }
+            if (saya !== versi) return;
+
+            const pesan = $("pesan");
+            if (!data.ok) {
+                resetHasil(data.pesan || "Tidak ada data yang dapat ditampilkan.");
+                pesan.textContent = data.pesan;
+                pesan.classList.remove("d-none");
+                return;
+            }
+            if (data.pesan) {
+                pesan.textContent = data.pesan;
+                pesan.classList.remove("d-none");
+            } else {
+                pesan.classList.add("d-none");
+            }
+
+            $("r-jumlah").textContent = data.ringkasan.jumlah;
+            $("r-rata").textContent = data.ringkasan.rata;
+            $("r-murah").textContent = data.ringkasan.termurah;
+            $("r-mahal").textContent = data.ringkasan.termahal;
+
+            const tbody = $("tabel-kos");
+            tbody.replaceChildren();
+            data.tabel.forEach((k) => {
+                const tr = document.createElement("tr");
+                [k.nama, k.harga_rp, k.jarak_km + " km", k.ac === "ya" ? "Ya" : "Tidak", k.rating]
+                    .forEach((v) => {
+                        const td = document.createElement("td");
+                        td.textContent = v;
+                        tr.appendChild(td);
+                    });
+                const tdKategori = document.createElement("td");
+                const badge = document.createElement("span");
+                badge.className = "class-badge " + k.kategori.toLowerCase();
+                badge.textContent = k.kategori;
+                tdKategori.appendChild(badge);
+                tr.appendChild(tdKategori);
+                tbody.appendChild(tr);
+            });
+
+            if (!data.visualisasi) {
+                resetHasil(data.pesan || "Belum cukup data untuk menampilkan grafik.");
+                return;
+            }
+
+            grafik.forEach((nama) => {
+                $("img-" + nama).src = "data:image/png;base64," + data.visualisasi.gambar[nama];
+                $("img-" + nama).classList.remove("d-none");
+            });
+            const info = data.visualisasi.ringkas;
+            $("stat-harga").textContent = `Batas kategori murah: ${info.batas}.`;
+            $("stat-confusion").textContent = `Akurasi validasi silang: ${info.akurasi}.`;
+            $("stat-posisi").textContent =
+                `Estimasi: ${info.prediksi_harga} · Kategori: ${info.prediksi_kategori}.`;
+            grafik.forEach((nama) => setPenjelasan(nama, "AI sedang menyiapkan penjelasan…"));
+            muatPenjelasan(saya, qs);
+        }
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            muat();
+        });
+        form.addEventListener("input", () => {
+            const minimum = $("harga-min");
+            const maksimum = $("harga-max");
+            if (Number(minimum.value) > Number(maksimum.value)) {
+                if (document.activeElement === minimum) maksimum.value = minimum.value;
+                else minimum.value = maksimum.value;
+            }
+            perbaruiLabelRentang();
+            clearTimeout(timer);
+            timer = setTimeout(muat, 600);
+        });
+        form.addEventListener("reset", () => setTimeout(() => {
+            perbaruiLabelRentang();
+            muat();
+        }, 0));
+        perbaruiLabelRentang();
+        muat();
+    </script>
+</body>
+
+</html>
