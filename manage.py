@@ -20,3 +20,11 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+if os.environ.get("VERCEL"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "/tmp/db.sqlite3",
+        }
+    }
